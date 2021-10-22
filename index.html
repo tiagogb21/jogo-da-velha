@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 9;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .line {
+      display: flex;
+    }
+
+    .cell {
+      width: 50px;
+      height: 50px;
+      border: 1px solid black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+</head>
+
+<body>
+  <script>
+
+    let body = document.body;
+
+    let $ = document.querySelector.bind(document);
+    let create = document.createElement.bind(document);
+
+    let container = create("div");
+    container.className = "container";
+    body.appendChild(container);
+
+    function createLine(fatherOfLine, classOfLine) {
+      line = create("div");
+      line.className = classOfLine;
+      fatherOfLine.appendChild(line)
+    }
+
+    function createCell(fatherOfCell, classOfCell) {
+      cell = create("div");
+      cell.className = classOfCell;
+      fatherOfCell.appendChild(cell);
+    }
+
+    let line;
+    let cell;
+
+    for (let i = 0; i < 3; i += 1) {
+      createLine(container, "line");
+
+      for (let j = 0; j < 3; j += 1) {
+        createCell(line, "cell");
+      }
+
+    }
+
+    let store = ["X", "O"];
+
+    let cellFamily = document.querySelectorAll(".cell");
+
+    let cont = 1;
+
+    let obj = {}
+
+    for (let i = 0; i < cellFamily.length; i += 1) {
+
+      cellFamily[i].addEventListener('click', () => {
+
+        let encontraXis = cellFamily[i].className.indexOf("xis");
+        let encontraBola = cellFamily[i].className.indexOf("bola");
+
+        if (encontraXis === -1 && encontraBola === -1) {
+
+          let figure = store[cont % 2];
+
+          if (cont % 2 === 0) {
+            cellFamily[i].textContent = figure;
+            cellFamily[i].classList.add("xis");
+            obj[`${cont}`] = "xis";
+          }
+          else if (cont % 2 === 1) {
+            cellFamily[i].textContent = figure;
+            cellFamily[i].classList.add("bola");
+            obj[`${cont}`] = "bola";
+          }
+
+          cont++;
+
+        }
+
+        console.log(obj)
+
+        function condicoesDeVitoria(obj, figura) {
+          if (
+            obj[1] === figura && obj[2] === figura && obj[3] === figura ||
+            obj[4] === figura && obj[5] === figura && obj[6] === figura ||
+            obj[7] === figura && obj[8] === figura && obj[9] === figura ||
+            obj[1] === figura && obj[4] === figura && obj[7] === figura ||
+            obj[2] === figura && obj[5] === figura && obj[8] === figura ||
+            obj[3] === figura && obj[6] === figura && obj[9] === figura ||
+            obj[1] === figura && obj[5] === figura && obj[9] === figura ||
+            obj[3] === figura && obj[5] === figura && obj[7] === figura
+          ) {
+            return `${figura} ganhou`;
+          }
+          return 'empate';
+        }
+
+        condicoesDeVitoria(obj, "xis");
+        condicoesDeVitoria(obj, "bola");
+
+      });
+
+    }
+
+  </script>
+</body>
+
+</html>
